@@ -1,0 +1,17 @@
+.DS_Store
+work/cad/base.dxf
+work/cad/base.svg
+work/cad/*.png
+work/preview/
+work/finalcheck/
+work/template_docx/
+
+outputs/*
+!outputs/office_cabling_report.tex
+
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+

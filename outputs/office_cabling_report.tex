@@ -1,0 +1,244 @@
+\documentclass[UTF8,a4paper,12pt]{ctexart}
+
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{pdfpages}
+\usepackage{setspace}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+
+\geometry{left=3.18cm,right=3.18cm,top=2.54cm,bottom=2.54cm}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\setlength{\headheight}{15pt}
+\setstretch{1.3}
+\emergencystretch=2em
+\captionsetup{font=small,labelsep=space,skip=4pt}
+\renewcommand{\arraystretch}{1.08}
+\setcounter{tocdepth}{2}
+
+\ctexset{
+  section={format=\centering\bfseries\zihao{3},name={},number=\arabic{section}.,aftername={},beforeskip=8pt,afterskip=8pt},
+  subsection={format=\bfseries\zihao{4},number=\arabic{section}.\arabic{subsection},beforeskip=6pt,afterskip=4pt},
+  subsubsection={format=\bfseries\zihao{-4},number=\arabic{section}.\arabic{subsection}.\arabic{subsubsection},beforeskip=4pt,afterskip=2pt}
+}
+
+\newcommand{\bodypagestyle}{%
+  \pagestyle{fancy}
+  \fancyhf{}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+\begin{document}
+
+\includepdf[pages=1,pagecommand={}]{cover_template.pdf}
+
+\clearpage
+\zihao{-4}
+\pagenumbering{Roman}
+\bodypagestyle
+
+\begin{center}
+  {\zihao{3}\bfseries 摘要}
+\end{center}
+
+综合布线系统是办公建筑电话通信和计算机网络的统一传输平台。本文以某办公楼为对象，依据 GB50311-2016、GB/T50312-2016、GB51348-2019 及图集 20X101-3，对地下1层至地上4层的工作区、配线、干线、设备间和管理子系统进行设计。系统采用 BD--FD--TO/TP 分层星型拓扑，共设置数据点229个、语音点227个。水平链路采用六类非屏蔽双绞线，数据主干采用12芯单模光缆，语音主干采用3类25对大对数电缆。报告完成了水平线缆、交换机、主干电缆、配线架及跳线数量计算，并提出桥架敷设、标识管理和测试验收要求。设计结果可满足千兆到桌面、万兆主干及后期扩容需求。
+
+\noindent\textbf{关键词：}综合布线；办公楼；信息点；配线子系统；干线子系统
+
+\vspace{0.6cm}
+\tableofcontents
+
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\section{设计依据与需求分析}
+
+\subsection{建筑概况与设计范围}
+本工程建筑面积约9573m$^2$。地下一层主要设置车库、变配电站、排风机房和弱电机房；地上六层主要为大堂、消防控制室、接待室及办公空间。本次设计范围为地下1层至地上4层，综合布线系统支持电话通信系统和计算机网络系统，完成工作区信息点、水平配线、垂直主干、设备间、配线设备及敷设方式设计。
+
+\subsection{设计依据}
+设计主要依据《综合布线系统工程设计规范》GB50311-2016[1]、《综合布线系统工程验收规范》GB/T50312-2016[2]、《民用建筑电气设计标准》GB51348-2019[3]、《数据中心设计规范》GB50174-2017[4]和《综合布线系统工程设计与施工》20X101-3[5]。系统遵循规范性、实用性、可靠性、可扩展性和可维护性原则，桥架预留不少于30\%空间，所有面板、线缆、配线架和设备端口采用统一编号。
+
+\subsection{业务与性能要求}
+固定工位按1个数据点和1个语音点配置，独立办公室根据工位和设备需求增加信息点，公共区域按功能预留。水平永久链路长度不超过90m；数据业务按千兆到桌面、万兆主干设计；水平线缆采用低烟无卤六类非屏蔽双绞线，数据主干采用12芯单模光缆，语音主干采用3类25对大对数电缆。
+
+\section{综合布线系统设计}
+
+\subsection{系统组成与拓扑}
+系统由工作区子系统、配线子系统、干线子系统、设备间和管理子系统组成。地下一层弱电机房设置建筑物配线设备BD，各楼层弱电井设置楼层配线设备FD。数据链路为“TO--六类水平电缆--RJ45配线架--交换机--LIU--单模光缆--BD”；语音链路为“TP--六类水平电缆--RJ45配线架--IDC跳线--25对电缆--BD”。各FD独立接入BD，不采用FD之间级联。
+
+\subsection{综合布线平面设计}
+依据建筑平面功能分区和弱电井位置布置信息点及水平路由。图中红色圆形符号表示信息点，标注“TD/TP$\times n$”表示该房间设置$n$组数据、语音信息点；青色线路表示由信息点汇聚至楼层配线设备FD的水平六类线缆路由，紫色方框表示FD。路由优先沿走廊吊顶线槽敷设，再经支线钢管引入房间，避免穿越结构墙、卫生间及强电设备集中区。各楼层信息点数量与表1保持一致。
+
+\clearpage
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]{cad/floor1_cabling.png}
+
+\vspace{0.6em}
+\small （a）一层综合布线平面图
+
+\vspace{1.0em}
+\includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]{cad/floor2_cabling.png}
+
+\vspace{0.6em}
+\small （b）二层综合布线平面图
+\caption{一、二层综合布线平面设计}
+\end{figure}
+
+\clearpage
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]{cad/floor3_cabling.png}
+
+\vspace{0.6em}
+\small （a）三层综合布线平面图
+
+\vspace{1.0em}
+\includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]{cad/floor4_cabling.png}
+
+\vspace{0.6em}
+\small （b）四层综合布线平面图
+\caption{三、四层综合布线平面设计}
+\end{figure}
+
+\clearpage
+\subsection{工作区子系统}
+普通办公区采用86型双口面板，配置数据模块和语音模块，面板底边距地300mm，并与强电插座保持必要间距。会议室可采用桌面翻盖式接口，潮湿或积尘区域采用防尘、防溅面板。信息点统计见表1。
+
+\begin{table}[H]
+\centering
+\caption{信息点统计}
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline
+楼层/区域 & 数据点TO & 语音点TP & 合计\\ \hline
+1F北区 & 23 & 22 & 45\\
+1F南区 & 29 & 28 & 57\\
+2F北区 & 26 & 26 & 52\\
+2F南区 & 31 & 31 & 62\\
+3F & 48 & 48 & 96\\
+4F & 72 & 72 & 144\\ \hline
+合计 & 229 & 227 & 456\\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{配线子系统}
+水平数据和语音链路均采用六类非屏蔽4对双绞线。线缆用量按下式估算：
+\[
+C=\left[\frac{F+N}{2}+L\right]\times n\times(1+10\%)
+\]
+式中，$F$、$N$分别为FD至最远、最近信息点距离，$L$为端接余量，取2m；$n$为该区域数据点与语音点总数；10\%为施工损耗和备用量。以4F为例：
+\[
+C=\left[\frac{76+7.5}{2}+2\right]\times144\times1.1=6930\text{m}
+\]
+每箱线缆305m，故4F需$\lceil6930/305\rceil=23$箱。各区域独立供货时箱数向上取整，统计见表2。
+
+\begin{table}[H]
+\centering
+\caption{水平双绞线用量}
+\small
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+区域 & 信息点数 & 最近/m & 最远/m & 长度/m & 箱数\\ \hline
+1F北区 & 45 & 7.2 & 29 & 995.0 & 4\\
+1F南区 & 57 & 7.5 & 30 & 1301.0 & 5\\
+2F北区 & 52 & 6.0 & 29 & 1115.4 & 4\\
+2F南区 & 62 & 7.5 & 40 & 1756.2 & 6\\
+3F & 96 & 7.5 & 76 & 4620.0 & 16\\
+4F & 144 & 7.5 & 76 & 6930.0 & 23\\ \hline
+合计 & 456 & -- & -- & 16717.6 & 58\\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{干线子系统}
+每台24口交换机按2芯主用、2芯备用配置。交换机数量为
+\[
+n_{\mathrm{sw}}=\left\lceil n_{\mathrm{data}}/24\right\rceil .
+\]
+每个FD敷设1根12芯单模光缆，实际使用芯数按交换机数量确定。语音主干按10\%余量计算：
+\[
+n_{\mathrm{voice}}=\left\lceil N_{\mathrm{TP}}\times1.1/25\right\rceil .
+\]
+
+\begin{table}[H]
+\centering
+\caption{主干容量配置}
+\small
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+区域 & 数据点 & 交换机/台 & 使用光纤/芯 & 12芯光缆/根 & 25对电缆/根\\ \hline
+1F北区 & 23 & 1 & 4 & 1 & 1\\
+1F南区 & 29 & 2 & 8 & 1 & 2\\
+2F北区 & 26 & 2 & 8 & 1 & 2\\
+2F南区 & 31 & 2 & 8 & 1 & 2\\
+3F & 48 & 2 & 8 & 1 & 3\\
+4F & 72 & 3 & 12 & 1 & 4\\ \hline
+合计 & 229 & 12 & -- & 6 & 14\\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{设备间与管理子系统}
+主设备间设于地下一层弱电机房，配置19英寸标准机柜、核心交换机、ODF、DDF、100对IDC配线架、理线器、PDU和接地铜排。各FD设置RJ45配线架、光纤配线单元、接入交换机和理线器。设备间应满足防火、防潮、防尘、温湿度和检修空间要求。标识采用“楼层--区域--机柜--配线架--端口--业务类型”编码，竣工时提交端口对应表和测试记录。
+
+\section{设备选型、施工与验收}
+
+\subsection{配线设备及跳线计算}
+每个信息点在FD侧占用1个RJ45端口，因此各区域配线架数量按$\lceil N/24\rceil$计算，分别为2、3、3、3、4、6个，共21个。语音干线侧每个FD配置1个100对IDC配线架，共6个。跳线按对应业务点50\%向上取整配置，语音跳线114根，数据跳线116根。
+
+\subsection{布线与施工要求}
+主干线缆采用600$\times$200mm垂直防火桥架沿弱电井敷设，光缆与大对数电缆分层布放。水平线缆采用走廊吊顶内300$\times$100mm镀锌线槽与$\Phi25$mm钢管组合敷设，线槽填充率不大于40\%，与强电桥架平行间距不小于300mm。桥架、线槽和机柜应可靠接地，穿越楼板和防火分区处采用防火板、阻火包及防火密封胶封堵。
+
+双绞线敷设时不得过度牵引，弯曲半径不小于线缆外径的4倍；端接时保持线对绞合状态。光缆严禁硬折，弯曲半径符合产品要求。隐蔽工程封闭前检查线缆路径、数量、标识、桥架接地和防火封堵。
+
+\subsection{测试与验收}
+工程完成后按GB/T50312-2016进行验收[2]。六类链路测试内容包括接线图、长度、插入损耗、近端串扰、回波损耗、传播时延和时延偏差；光纤链路测试长度、衰减及端面质量。测试报告应与信息点编号一一对应，不合格链路整改后重新测试。
+
+\subsection{设备材料表}
+\begin{table}[H]
+\centering
+\caption{设备材料统计}
+\small
+\begin{tabular}{|c|p{5.1cm}|c|c|p{3.0cm}|}
+\hline
+序号 & 名称 & 单位 & 数量 & 备注\\ \hline
+1 & 六类非屏蔽4对双绞线 & 箱 & 58 & 305m/箱\\
+2 & 3类25对大对数电缆 & 根 & 14 & 语音主干\\
+3 & 12芯单模光缆 & 根 & 6 & 每个FD一根\\
+4 & 24口接入交换机 & 台 & 12 & 楼层接入\\
+5 & 24口RJ45配线架 & 个 & 21 & 水平线缆端接\\
+6 & 100对IDC配线架 & 个 & 6 & 语音主干端接\\
+7 & RJ45--IDC语音跳线 & 根 & 114 & 语音点50\%配置\\
+8 & RJ45--RJ45六类跳线 & 根 & 116 & 数据点50\%配置\\
+9 & 86型双口面板及底盒 & 套 & 229 & 余2口装挡板\\
+10 & 六类数据模块 & 个 & 229 & 数据点\\
+11 & 语音模块 & 个 & 227 & 语音点\\
+12 & 光纤配线单元LIU & 套 & 6 & 各FD配置\\
+13 & 机柜、理线架及辅材 & 批 & 1 & 按施工图深化\\ \hline
+\end{tabular}
+\end{table}
+
+\section{设计总结}
+本设计完成了某办公楼综合布线系统的信息点配置、系统拓扑、水平线缆、主干容量、配线设备、施工敷设和材料统计。系统共设置456个信息点，采用分层星型结构，水平链路统一使用六类非屏蔽双绞线，数据主干使用12芯单模光缆，语音主干使用3类25对大对数电缆。计算结果与系统图、设备材料表保持一致，并为桥架、端口和主干容量预留了扩展条件。
+
+实际施工图深化阶段还需根据各层CAD平面图复核路由长度、机柜位置和桥架尺寸，完善端口对应表、机柜布置图及测试清单。通过本次设计，进一步掌握了综合布线工程从需求分析、容量计算到施工验收的完整流程。
+
+\section*{参考文献}
+\addcontentsline{toc}{section}{参考文献}
+\begin{enumerate}
+\item 中华人民共和国住房和城乡建设部. 综合布线系统工程设计规范：GB50311-2016[S]. 北京：中国计划出版社，2016.
+\item 中华人民共和国住房和城乡建设部. 综合布线系统工程验收规范：GB/T50312-2016[S]. 北京：中国计划出版社，2016.
+\item 中华人民共和国住房和城乡建设部. 民用建筑电气设计标准：GB51348-2019[S]. 北京：中国建筑工业出版社，2019.
+\item 中华人民共和国住房和城乡建设部. 数据中心设计规范：GB50174-2017[S]. 北京：中国计划出版社，2017.
+\item 中国建筑标准设计研究院. 综合布线系统工程设计与施工：20X101-3[S]. 北京：中国计划出版社，2020.
+\end{enumerate}
+
+\end{document}
