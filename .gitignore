@@ -4,6 +4,7 @@ work/cad/base.svg
 work/cad/*.png
 work/preview/
 work/finalcheck/
+work/recheck/
 work/template_docx/
 
 outputs/*
@@ -14,4 +15,3 @@ outputs/*
 *.out
 *.toc
 *.synctex.gz
-

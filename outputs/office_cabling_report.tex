@@ -7,6 +7,7 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{pdflscape}
 \usepackage{pdfpages}
 \usepackage{setspace}
 \usepackage{tabularx}
@@ -75,19 +76,28 @@
 \subsection{系统组成与拓扑}
 系统由工作区子系统、配线子系统、干线子系统、设备间和管理子系统组成。地下一层弱电机房设置建筑物配线设备BD，各楼层弱电井设置楼层配线设备FD。数据链路为“TO--六类水平电缆--RJ45配线架--交换机--LIU--单模光缆--BD”；语音链路为“TP--六类水平电缆--RJ45配线架--IDC跳线--25对电缆--BD”。各FD独立接入BD，不采用FD之间级联。
 
+\clearpage
+\begin{landscape}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{cad/office_cabling_system_diagram.png}
+\caption{某办公楼综合布线系统图（CAD自绘）}
+\end{figure}
+\end{landscape}
+\clearpage
+
 \subsection{综合布线平面设计}
 依据建筑平面功能分区和弱电井位置布置信息点及水平路由。图中红色圆形符号表示信息点，标注“TD/TP$\times n$”表示该房间设置$n$组数据、语音信息点；青色线路表示由信息点汇聚至楼层配线设备FD的水平六类线缆路由，紫色方框表示FD。路由优先沿走廊吊顶线槽敷设，再经支线钢管引入房间，避免穿越结构墙、卫生间及强电设备集中区。各楼层信息点数量与表1保持一致。
 
-\clearpage
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]{cad/floor1_cabling.png}
+\includegraphics[width=\textwidth,height=0.30\textheight,keepaspectratio]{cad/floor1_cabling.png}
 
 \vspace{0.6em}
 \small （a）一层综合布线平面图
 
 \vspace{1.0em}
-\includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]{cad/floor2_cabling.png}
+\includegraphics[width=\textwidth,height=0.30\textheight,keepaspectratio]{cad/floor2_cabling.png}
 
 \vspace{0.6em}
 \small （b）二层综合布线平面图
