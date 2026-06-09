@@ -43,6 +43,14 @@ def add_line(msp, points, layer="线路", dashed=False):
     msp.add_lwpolyline(points, dxfattribs=attrs)
 
 
+def add_junction(msp, x, y):
+    msp.add_circle(
+        (x, y),
+        0.8,
+        dxfattribs={"layer": "线路", "color": 1},
+    )
+
+
 def add_terminal(msp, x, y, label, count):
     msp.add_circle((x, y), 3.1, dxfattribs={"layer": "设备"})
     add_text(msp, label, (x, y), 2.1, TextEntityAlignment.MIDDLE_CENTER)
@@ -122,22 +130,40 @@ def build():
     for y, floor, fd, td, tp, sw in right_data:
         right_trunks.append((y, add_floor_branch(msp, 258, y, floor, fd, td, tp, sw, "right")))
 
-    # 垂直主干与BD
-    left_bus_x, right_bus_x = 133, 187
-    add_line(msp, [(left_bus_x, 64), (left_bus_x, 192)])
-    add_line(msp, [(right_bus_x, 64), (right_bus_x, 123)])
+    # 数据、语音垂直主干分别汇聚至BD
+    left_data_bus, left_voice_bus = 130, 136
+    right_data_bus, right_voice_bus = 190, 184
+    add_line(msp, [(left_data_bus, 64), (left_data_bus, 192)])
+    add_line(msp, [(left_voice_bus, 64), (left_voice_bus, 192)])
+    add_line(msp, [(right_data_bus, 64), (right_data_bus, 123)])
+    add_line(msp, [(right_voice_bus, 64), (right_voice_bus, 123)])
     for y, trunk in left_trunks:
-        add_line(msp, [(trunk, y + 4), (left_bus_x, y + 4)])
-        add_line(msp, [(trunk, y - 4), (left_bus_x, y - 4)])
+        add_line(msp, [(trunk, y + 4), (left_data_bus, y + 4)])
+        add_line(msp, [(trunk, y - 4), (left_voice_bus, y - 4)])
+        add_junction(msp, left_data_bus, y + 4)
+        add_junction(msp, left_voice_bus, y - 4)
     for y, trunk in right_trunks:
-        add_line(msp, [(trunk, y + 4), (right_bus_x, y + 4)])
-        add_line(msp, [(trunk, y - 4), (right_bus_x, y - 4)])
+        add_line(msp, [(trunk, y + 4), (right_data_bus, y + 4)])
+        add_line(msp, [(trunk, y - 4), (right_voice_bus, y - 4)])
+        add_junction(msp, right_data_bus, y + 4)
+        add_junction(msp, right_voice_bus, y - 4)
 
     add_fd_symbol(msp, 154, 118, "BD")
-    for offset in (-8, -4, 0, 4, 8):
-        add_line(msp, [(left_bus_x, 133 + offset), (154, 133 + offset)])
-    for offset in (-4, 4):
-        add_line(msp, [(166, 133 + offset), (right_bus_x, 133 + offset)])
+    add_line(msp, [(left_data_bus, 128), (154, 128)])
+    add_line(msp, [(left_voice_bus, 123), (154, 123)])
+    add_line(msp, [(166, 128), (right_data_bus, 128), (right_data_bus, 123)])
+    add_line(msp, [(166, 123), (right_voice_bus, 123)])
+    for point in [
+        (left_data_bus, 128),
+        (left_voice_bus, 123),
+        (154, 128),
+        (154, 123),
+        (166, 128),
+        (166, 123),
+        (right_data_bus, 123),
+        (right_voice_bus, 123),
+    ]:
+        add_junction(msp, *point)
 
     # 电话及网络机房
     add_line(msp, [(145, 113), (145, 194), (267, 194), (267, 113), (145, 113)], "图框", True)
@@ -147,11 +173,13 @@ def build():
     add_box(msp, 178, 142, 25, 9, "PBX", 2.4)
     add_box(msp, 216, 178, 20, 9, "服务器", 2.4)
     add_box(msp, 246, 178, 16, 9, "工作站", 2.4)
-    add_line(msp, [(166, 137), (174, 137), (174, 165), (178, 165)])
-    add_line(msp, [(166, 125), (174, 125), (174, 146.5), (178, 146.5)])
+    add_line(msp, [(160, 133), (160, 165), (178, 165)])
+    add_line(msp, [(166, 121), (172, 121), (172, 146.5), (178, 146.5)])
     add_line(msp, [(203, 165), (214, 165)])
     add_line(msp, [(226, 178), (226, 170)])
     add_line(msp, [(254, 178), (254, 165), (241, 165)])
+    add_junction(msp, 160, 133)
+    add_junction(msp, 166, 121)
 
     # 进线间
     add_line(msp, [(185, 22), (185, 58), (289, 58), (289, 22), (185, 22)], "图框", True)
@@ -159,10 +187,15 @@ def build():
     add_fd_symbol(msp, 251, 30, "ODF")
     add_fd_symbol(msp, 201, 30, "DDF")
     add_box(msp, 222, 34, 20, 8, "传输设备", 2.0)
-    add_line(msp, [(207, 113), (207, 48)])
+    # 数据经核心交换机、路由器/防火墙、ODF进入运营商网络；
+    # 语音经PBX、DDF进入运营商网络。
+    add_line(msp, [(241, 165), (276, 165), (276, 37), (263, 37)])
+    add_line(msp, [(203, 146.5), (207, 146.5), (207, 37)])
     add_line(msp, [(207, 37), (222, 37)])
     add_line(msp, [(242, 37), (251, 37)])
     add_line(msp, [(263, 37), (305, 37)])
+    for point in [(207, 37), (263, 37), (276, 37)]:
+        add_junction(msp, *point)
     add_text(msp, "至物业总配线间", (277, 41), 2.4)
 
     # 图纸说明
